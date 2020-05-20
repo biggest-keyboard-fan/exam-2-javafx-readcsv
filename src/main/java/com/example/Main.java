@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class Main extends Application {
@@ -33,9 +35,6 @@ public class Main extends Application {
     }
     @Override
     public void start(Stage primaryStage) throws Exception {
-        try(Scanner scanner = new Scanner(new File("lab-questions.csv"))){
-            fileContent = scanner.useDelimiter("\\Z").next();
-        }
         //Load javafx form
         try(FileInputStream fi = new FileInputStream("csv-to-form.fxml")){
             FXMLLoader loader = new FXMLLoader();
@@ -50,8 +49,7 @@ public class Main extends Application {
             e.printStackTrace();
         }
 
-
-        String[] lines = fileContent.split("\n");
+        String[] lines = Files.readAllLines(Paths.get("lab-questions.csv")).toArray(new String[0]);
         for (int i = 0; i < lines.length; i++) {
             String[] cells = lines[i].split(",");
             if(cells[0].isEmpty()){
